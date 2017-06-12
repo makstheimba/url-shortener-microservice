@@ -12,9 +12,11 @@ app.get('/', (req, res) => {
 });
 
 app.get(/^\/create\/(.+)/, (req, res) => {
-  const newUrl = /^https?:\/\//.test(req.params[0])
-    ? req.params[0]
-    : `http://${req.params[0]}`;
+  const reqPathLength = 8;
+  const passedUrl = req.url.slice(reqPathLength);
+  const newUrl = /^https?:\/\//.test(passedUrl)
+    ? passedUrl
+    : `http://${passedUrl}`;
 
   mongo.connect(mongoUrl, (err, db) => {
     if (err) {
